@@ -137,3 +137,4 @@ geo_sampling/
 .DS_Store
 
 poetry.lock
+mlruns/
