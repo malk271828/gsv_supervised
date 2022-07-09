@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# credential information
+credentials.py
+artifacts/
+data/
+geo_sampling/
+*.csv
+.DS_Store
+
+poetry.lock

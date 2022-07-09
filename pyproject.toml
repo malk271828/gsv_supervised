@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "gsv_supervised"
+version = "0.1.0"
+description = ""
+authors = ["Masato Tsuchiya <malk271828@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+requests = "^2.28.1"
+bs4 = "^0.0.1"
+rich = "^12.4.4"
+pyshp = "^2.3.0"
+Shapely = "^1.8.2"
+pyproj = "2.2.0"
+utm = "^0.7.0"
+pandas = "1.1.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
