@@ -55,6 +55,11 @@ def parseArgs():
         type=str,
         help='input csv file acquired by geo_sampling')
     argparser.add_argument(
+        "--heading",
+        default=45,
+        type=int,
+        help='input csv file acquired by geo_sampling')    
+    argparser.add_argument(
         "--out",
         default="artifacts/",
         type=str,
@@ -66,16 +71,20 @@ if __name__=="__main__":
     args = parseArgs()
     df = pd.read_csv(args.input)
     total = len(df)
+    detailMeta = False
 
     # sampling
     df = df[:args.num]
 
     for i, row in df.iterrows():
         # get metadata ----------------------------------
-        meta_path = args.out + "meta/meta_lat{0}_lon{1}.json".format(row.start_lat, row.start_long)
+        meta_path = args.out + "meta/meta_lat{0}_lon{1}_heading{2}.json".format(row.start_lat, row.start_long, args.heading)
         if not os.path.exists(meta_path):
-            gsv_meta = gsv_metadata(row.start_lat, row.start_long)
-            meta = pd.concat([row, pd.Series(gsv_meta)], axis=0)
+            if detailMeta:
+                gsv_meta = gsv_metadata(row.start_lat, row.start_long)
+                meta = pd.concat([row, pd.Series(gsv_meta)], axis=0)
+            else:
+                meta = row
             with open(meta_path, mode='w', encoding='utf-8') as fd:
                 json_str = meta.to_json(orient='index')
                 parsed = json.loads(json_str)
@@ -85,9 +94,9 @@ if __name__=="__main__":
             print("[green] skipped: {0} [/green]".format(meta_path))
 
         # get images by invoking Google Map APIs --------
-        img_path = args.out + "img/img_lat{0}_lon{1}.jpg".format(row.start_lat, row.start_long)
+        img_path = args.out + "img/img_lat{0}_lon{1}_heading{2}.jpg".format(row.start_lat, row.start_long, args.heading)
         if not os.path.exists(img_path):
-            img = gsv_image(row.start_lat, row.start_long, 0, 0)
+            img = gsv_image(row.start_lat, row.start_long, args.heading, 0)
             export_image_to_file(img, img_path=img_path)
             print("[cyan] save: {0} [/cyan]".format(img_path))
         else:
