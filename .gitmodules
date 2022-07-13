@@ -1,0 +1,6 @@
+[submodule "geo_sampling"]
+	path = geo_sampling
+	url = https://github.com/geosensing/geo_sampling
+[submodule "yolov7"]
+	path = yolov7
+	url = https://github.com/WongKinYiu/yolov7

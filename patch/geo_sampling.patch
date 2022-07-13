@@ -1,0 +1,46 @@
+diff --git a/geo_sampling/geo_roads.py b/geo_sampling/geo_roads.py
+index cb8b107..e7ca298 100644
+--- a/geo_sampling/geo_roads.py
++++ b/geo_sampling/geo_roads.py
+@@ -201,13 +201,13 @@ def bbbike_generate_extract_link(args):
+                       'sw_lat': sw_lat, 'sw_lng': sw_lng, 'ne_lat': ne_lat,
+                       'ne_lng': ne_lng, 'email': 'geo_sampling@mailinator.com',
+                       'as': 1, 'pg': 0}
+-            encoded_params = urllib.urlencode(params)
++            encoded_params = urllib.parse.urlencode(params)
+             base_url = 'http://extract.bbbike.org/?'
+             url = base_url + encoded_params
+             # Save BBBike data extract URL for debug
+             fn = 'bbbike_{0}_{1}.txt'.format(args.ccode, args.name)
+             with open(fn, 'wb') as f:
+-                f.write(url)
++                f.write(bytes(url, 'utf-8'))
+             return city, url
+ 
+ 
+@@ -377,7 +377,7 @@ def main(argv=sys.argv[1:]):
+             print("WARNING matplotlib is not installed")
+             args.plot = False
+ 
+-    f = open(args.output, 'wb')
++    f = open(args.output, 'w')
+     cols = ['segment_id', 'osm_id', 'osm_name', 'osm_type', 'start_lat',
+             'start_long', 'end_lat', 'end_long']
+     writer = csv.DictWriter(f, fieldnames=cols)
+diff --git a/geo_sampling/sample_roads.py b/geo_sampling/sample_roads.py
+index 36addde..900daaf 100644
+--- a/geo_sampling/sample_roads.py
++++ b/geo_sampling/sample_roads.py
+@@ -68,10 +68,10 @@ def main(argv=sys.argv[1:]):
+         sample_segments = segments
+     else:
+         sample_segments = [segments[i] for i in
+-                           sorted(random.sample(xrange(len(segments)),
++                           sorted(random.sample(range(len(segments)),
+                                                 args.samples))]
+ 
+-    with open(args.output, 'wb') as f:
++    with open(args.output, 'w') as f:
+         cols = ['segment_id', 'osm_id', 'osm_name', 'osm_type', 'start_lat',
+                 'start_long', 'end_lat', 'end_long']
+         writer = csv.DictWriter(f, fieldnames=cols)
