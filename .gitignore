@@ -132,7 +132,6 @@ dmypy.json
 credentials.py
 artifacts/
 data/
-geo_sampling/
 *.csv
 .DS_Store
 
