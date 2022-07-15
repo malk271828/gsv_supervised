@@ -9,6 +9,7 @@ from base64 import b64encode, b64decode
 import pandas as pd
 
 from credentials import API_KEY
+from settings import OUT_DIR
 
 def gsv_image(lat, lon, heading=0, pitch=0, size='640x640'):
     data = {'key': API_KEY,
@@ -58,10 +59,10 @@ def parseArgs():
         "--heading",
         default=45,
         type=int,
-        help='input csv file acquired by geo_sampling')    
+        help='heading direction')    
     argparser.add_argument(
         "--out",
-        default="artifacts/",
+        default=OUT_DIR,
         type=str,
         help='output dir')
     args = argparser.parse_args()
