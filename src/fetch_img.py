@@ -2,6 +2,7 @@ import argparse
 import requests
 import os
 import json
+import random
 
 from rich import print
 from base64 import b64encode, b64decode
@@ -75,10 +76,12 @@ if __name__=="__main__":
     detailMeta = False
 
     # sampling
-    df = df[:args.num]
+    df = df.sample(args.num)
 
     for i, row in df.iterrows():
         # get metadata ----------------------------------
+        if not os.path.exists(args.out + "meta"):
+            os.makedirs(args.out + "meta")
         meta_path = args.out + "meta/meta_lat{0}_lon{1}_heading{2}.json".format(row.start_lat, row.start_long, args.heading)
         if not os.path.exists(meta_path):
             if detailMeta:
