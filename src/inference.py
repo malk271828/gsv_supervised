@@ -48,6 +48,11 @@ def parseArgs():
         default=OUT_DIR + "gsv.yaml",
         type=str,
         help='data file path')
+    argparser.add_argument(
+        "--save",
+        default=False,
+        type=bool,
+        help='save result images')
     args = argparser.parse_args()
     return args
 
@@ -71,14 +76,14 @@ if __name__=="__main__":
 
     # # execute inference
     if detect:
-        subprocess.run([PYTHON_PATH, "yolov7/detect.py",
+        command = [PYTHON_PATH, "yolov7/detect.py",
             "--source", OUT_DIR + "img/",
             "--weight", args.weight,
             "--device", args.device,
-            "--save-txt",
-            "--save-conf",
-            "--nosave"
-        ], shell=False)
+            "--save-txt", "--save-conf"]
+        if not args.save:
+            command.apend("--nosave")
+        subprocess.run(command, shell=False)
     else:
         subprocess.run([PYTHON_PATH, "yolov7/test.py",
             "--data", args.data,
