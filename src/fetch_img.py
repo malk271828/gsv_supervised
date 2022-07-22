@@ -66,6 +66,11 @@ def parseArgs():
         default=OUT_DIR,
         type=str,
         help='output dir')
+    argparser.add_argument(
+        "--type",
+        default=None,
+        type=str,
+        help='osm type')
     args = argparser.parse_args()
     return args
 
@@ -76,7 +81,10 @@ if __name__=="__main__":
     detailMeta = False
 
     # sampling
-    df = df.sample(args.num)
+    if args.type in not None:
+        df = df[df.osm_type==args.type].sample(args.num)
+    else:
+        df = df.sample(args.num)
 
     for i, row in df.iterrows():
         # get metadata ----------------------------------

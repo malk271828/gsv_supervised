@@ -130,10 +130,17 @@ dmypy.json
 
 # credential information
 credentials.py
+
+# project-dependent
 artifacts/
 data/
 *.csv
 .DS_Store
+geo_roads
+sample_roads
 
+# package manager
 poetry.lock
+
+# mlflow
 mlruns/
