@@ -39,6 +39,11 @@ def parseArgs():
         type=str,
         help='weight file')
     argparser.add_argument(
+        "--device",
+        default="cuda:0",
+        type=str,
+        help='device index')
+    argparser.add_argument(
         "--data",
         default=OUT_DIR + "gsv.yaml",
         type=str,
@@ -56,19 +61,20 @@ if __name__=="__main__":
     img_path_list = []
     for i, row in df.iterrows():
         # get images by invoking Google Map APIs --------
-        img_path = "./img/img_lat{0}_lon{1}_heading{2}.jpg".format(row.start_lat, row.start_long, args.heading)
+        img_path = OUT_DIR + "img/img_lat{0}_lon{1}_heading{2}.jpg".format(row.start_lat, row.start_long, args.heading)
         if os.path.exists(img_path):
             img_path_list.append(img_path + "\n")
 
     with open(datalist_path,  "w") as fd:
         fd.writelines(img_path_list)
-        print("[green]output data list file to {0}[/green]. {1} images has been detected ".format(datalist_path, len(img_path_list)))
+        print("[green]output data list file to {0}[/green]. {1}/{2} images has been detected ".format(datalist_path, len(img_path_list), len(df)))
 
     # # execute inference
     if detect:
         subprocess.run([PYTHON_PATH, "yolov7/detect.py",
             "--source", OUT_DIR + "img/",
             "--weight", args.weight,
+            "--device", args.device,
             "--save-txt",
             "--save-conf",
             "--nosave"
@@ -77,6 +83,7 @@ if __name__=="__main__":
         subprocess.run([PYTHON_PATH, "yolov7/test.py",
             "--data", args.data,
             "--weight", args.weight,
+            "--device", args.device,
         ], shell=False)
 
     # delete temporary files
